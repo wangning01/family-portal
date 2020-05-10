@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.family.portal.domain.PlayList;
+import com.family.portal.domain.PlayListVideo;
 import com.family.portal.domain.Video;
 import com.family.portal.domain.VideoFilter;
 import com.family.portal.domain.VideoFilterItem;
+import com.family.portal.repository.PlayListRepository;
 import com.family.portal.repository.VideoRepository;
 import com.family.portal.service.FilterService;
 
@@ -30,6 +33,9 @@ public class PortalController {
 	
 	@Autowired
 	private FilterService filterService;
+
+	@Autowired
+	private PlayListRepository playListRepository;
 	
 	@RequestMapping(value="/addVideo", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
@@ -64,17 +70,6 @@ public class PortalController {
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody List<VideoFilter> leftNavFilters(){
 		
-		
-//		List<VideoFilter> filters = new ArrayList<>();
-//		
-//		VideoFilter filter = VideoFilter.builder().title("Language").icon("language").build();
-//		
-//		List<VideoFilter> filterItems = new ArrayList<>();
-//		filterItems.add(VideoFilter.builder().title("Chinese").build());
-//		filterItems.add(VideoFilter.builder().title("English").build());
-//		filter.setItems(filterItems);
-//		
-//		filters.add(filter);
 		return this.filterService.getAllFilters();
 	}
 	
@@ -85,6 +80,20 @@ public class PortalController {
 		return this.filterService.videosByFilterItem(VideoFilterItem.builder().byColumn(column).value(value).build());
 	}
 	
+	@RequestMapping(value="/getPlaylist", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody PlayList getPlaylist(){
+		
+		return this.playListRepository.findAll().get(0);
+	}
+	
+	@RequestMapping(value="/addToPlayList", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public void addToPlayList(@RequestBody Video video){
+		 PlayList playList = this.playListRepository.findById(1001L).get();
+		 playList.getVideos().add(video);
+		 this.playListRepository.save(playList);
+	}
 	
 	
 }
