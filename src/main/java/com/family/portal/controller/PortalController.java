@@ -3,6 +3,7 @@ package com.family.portal.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.family.portal.domain.PlayList;
-import com.family.portal.domain.PlayListVideo;
 import com.family.portal.domain.Video;
 import com.family.portal.domain.VideoFilter;
 import com.family.portal.domain.VideoFilterItem;
@@ -80,11 +80,19 @@ public class PortalController {
 		return this.filterService.videosByFilterItem(VideoFilterItem.builder().byColumn(column).value(value).build());
 	}
 	
-	@RequestMapping(value="/getPlaylist", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/getPlaylist/{playlistId}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody PlayList getPlaylist(){
+	public @ResponseBody PlayList getPlaylist(@PathVariable Long playlistId){
+		 Optional<PlayList> op =  this.playListRepository.findById(playlistId);
+		 return op.isPresent() ?  op.get() :  PlayList.builder().build();
+	}
+	
+	
+	@RequestMapping(value="/getPlaylists", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody List<PlayList> getPlaylists(){
 		
-		return this.playListRepository.findAll().get(0);
+		return this.playListRepository.findAll();
 	}
 	
 	@RequestMapping(value="/addToPlayList", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -93,6 +101,12 @@ public class PortalController {
 		 PlayList playList = this.playListRepository.findById(1001L).get();
 		 playList.getVideos().add(video);
 		 this.playListRepository.save(playList);
+	}
+	
+	@RequestMapping(value="/createNewPlaylist", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public void createPlayList(@RequestBody PlayList playlist){
+		 this.playListRepository.save(playlist);
 	}
 	
 	
