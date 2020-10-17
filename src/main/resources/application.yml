@@ -5,5 +5,5 @@ spring:
   datasource:
     jdbcUrl:  jdbc:oracle:thin:@localhost:1521:orcl2
     username: scott
-    password: toronto08
+    password: tiger
     driverClassName: oracle.jdbc.driver.OracleDriver

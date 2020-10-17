@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="PLAY_LIST")
 @Data
-@Builder
+@Builder 
 public class PlayList {
 	
 	@Id
