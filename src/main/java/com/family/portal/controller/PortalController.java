@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -107,6 +108,24 @@ public class PortalController {
 	@ResponseStatus(HttpStatus.OK)
 	public void createPlayList(@RequestBody PlayList playlist){
 		 this.playListRepository.save(playlist);
+	}
+	
+	@RequestMapping(value="/videosNotInPlaylist", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public List<Video> videosNotInPlaylist(@RequestBody PlayList playlist){
+		List<Video> allVideos = this.videoRepository.findAll();
+		List<Video> playlistVideos = this.playListRepository.findById(playlist.getPlayListId()).get().getVideos();
+		return allVideos.stream()
+                .filter(e -> !playlistVideos.contains(e))
+                .collect (Collectors.toList());
+	}
+	
+	@RequestMapping(value="/savePlaylist", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public void savePlaylist(@RequestBody PlayList playlist){
+		
+		this.playListRepository.save(playlist);
+		
 	}
 	
 	

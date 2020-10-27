@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,7 @@ public class PlayList {
 	
 	@Column(name="NAME")
 	private String name;
+	
 	
 	@ManyToMany
 	@JoinTable(name = "PLAY_LIST_VIDEO", joinColumns = { @JoinColumn(name = "PLAY_LIST_ID") }, inverseJoinColumns = { @JoinColumn(name = "VIDEO_ID") })
