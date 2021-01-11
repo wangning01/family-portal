@@ -3,6 +3,7 @@ package com.family.portal.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,10 +38,9 @@ public class PlayList {
 	private String name;
 	
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "PLAY_LIST_VIDEO", joinColumns = { @JoinColumn(name = "PLAY_LIST_ID") }, inverseJoinColumns = { @JoinColumn(name = "VIDEO_ID") })
 	private List<Video> videos;
-	
 	
 	
 	

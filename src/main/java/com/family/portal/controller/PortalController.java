@@ -1,5 +1,6 @@
 package com.family.portal.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,8 @@ public class PortalController {
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody PlayList getPlaylist(@PathVariable Long playlistId){
 		 Optional<PlayList> op =  this.playListRepository.findById(playlistId);
+		 if(op.isPresent()) {Collections.sort(op.get().getVideos());}
+		 
 		 return op.isPresent() ?  op.get() :  PlayList.builder().build();
 	}
 	

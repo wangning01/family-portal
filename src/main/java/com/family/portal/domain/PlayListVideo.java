@@ -7,6 +7,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -32,6 +33,9 @@ public class PlayListVideo implements Serializable{
 	@Column(name="VIDEO_ID")
 	private Long videoId;
 	
+//	@ManyToOne
+//	private Video video;
+//	
 	
 	
 }
